@@ -20,38 +20,71 @@ const BlogForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle justify-center w-full max-w-lg py-4 space-x-4 space-y-4  p-6 rounded-lg shadow-lg"
+        className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg"
       >
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="rounded-lg p-2"
-        />
-        <input
-          type="text"
-          name="subheading"
-          placeholder="Subheading"
-          value={formData.subheading}
-          onChange={handleChange}
-          required
-          className="rounded-lg p-2"
-        />
-        <textarea
-          name="content"
-          placeholder="Content"
-          value={formData.content}
-          onChange={handleChange}
-          required
-          className="rounded-lg p-2"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
+          Create a New Blog
+        </h2>
+        <div className="mb-4">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter the blog title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="subheading"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Subheading
+          </label>
+          <input
+            type="text"
+            id="subheading"
+            name="subheading"
+            placeholder="Enter the blog subheading"
+            value={formData.subheading}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            htmlFor="content"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Content
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Write your blog content here..."
+            value={formData.content}
+            onChange={handleChange}
+            required
+            className="w-full h-40 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-none transition duration-300"
+        >
           Create Blog
         </button>
       </form>
