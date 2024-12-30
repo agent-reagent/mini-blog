@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { createBlog } from "../services/blogService";
+import axios from "axios";
+const API_URL = "http://localhost:5000/api";
 
 const BlogForm = () => {
   const [formData, setFormData] = useState({
@@ -8,15 +10,51 @@ const BlogForm = () => {
     content: "",
   });
 
+  const [image, setImage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // setImage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createBlog(formData);
+    const withImg = { ...formData, image };
+    await createBlog(withImg);
     alert("Blog created successfully");
     setFormData({ title: "", subheading: "", content: "" });
+  };
+
+  const handleImageUpload = async (e) => {
+    setIsLoading(true);
+    const file = e.target.files[0];
+
+    if (!file) {
+      setIsLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setImage(response.data.imageUrl);
+      setFormData((prev) => ({ ...prev, image: response.data.imageUrl }));
+    } catch (error) {
+      console.error(
+        "Error uploading image:",
+        error.response?.data || error.message
+      );
+      alert("Error uploading image. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -81,11 +119,16 @@ const BlogForm = () => {
             className="w-full h-40 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
           />
         </div>
+        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        {/* {image && (
+          <img src={image} alt="Preview" style={{ maxWidth: "200px" }} />
+        )} */}
         <button
           type="submit"
-          className="w-full py-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-none transition duration-300"
+          className="w-full py-3 my-3 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-none transition duration-300"
+          disabled={isLoading}
         >
-          Create Blog
+          {isLoading ? "Loading..." : "Create Blog"}
         </button>
       </form>
     </div>

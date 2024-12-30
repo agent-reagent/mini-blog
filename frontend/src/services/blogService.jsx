@@ -8,3 +8,9 @@ export const createBlog = async (blog) => axios.post(`${API_URL}/blogs`, blog);
 export const updateBlog = async (id, blog) =>
   axios.put(`${API_URL}/blogs/${id}`, blog);
 export const deleteBlog = async (id) => axios.delete(`${API_URL}/blogs/${id}`);
+export const uploadImage = async (formData) =>
+  axios.post(`${API_URL}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

@@ -1,11 +1,20 @@
 const express = require("express");
 const Blog = require("../models/Blog");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+const upload = require("../config/multerConfig");
 
 // Create
 router.post("/blogs", async (req, res) => {
   try {
-    const blog = new Blog(req.body);
+    const blogData = {
+      title: req.body.title,
+      subheading: req.body.subheading,
+      content: req.body.content,
+      image: req.body.image, // Ensure this is included
+    };
+    const blog = new Blog(blogData);
     await blog.save();
     res.status(201).json(blog);
   } catch (error) {
@@ -56,6 +65,16 @@ router.delete("/blogs/:id", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+});
+
+router.post("/upload", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
+  const filePath = `/uploads/${req.file.filename}`;
+  const fullUrl = `${req.protocol}://${req.get("host")}${filePath}`;
+
+  res.status(200).json({ imageUrl: fullUrl });
 });
 
 module.exports = router;

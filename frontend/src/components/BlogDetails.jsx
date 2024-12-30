@@ -20,17 +20,27 @@ const BlogDetails = () => {
   }, [id]);
 
   if (!blog) return <p>Loading...</p>;
-
-  return (
-    <div>
-      <h1>{blog.title}</h1>
-      <h3>{blog.subheading}</h3>
-      <p>{blog.content}</p>
-      <p>
-        <strong>Created At:</strong> {new Date(blog.createdAt).toLocaleString()}
-      </p>
-    </div>
-  );
+  else
+    return (
+      <div>
+        {blog.image && (
+          <div>
+            <img
+              src={blog.image}
+              alt="no image here"
+              style={{ maxWidth: "100%", height: "auto", marginTop: "20px" }}
+            />
+          </div>
+        )}
+        <h1>{blog.title}</h1>
+        <h3>{blog.subheading}</h3>
+        <p>{blog.content}</p>
+        <p>
+          <strong>Created At:</strong>{" "}
+          {new Date(blog.createdAt).toLocaleString()}
+        </p>
+      </div>
+    );
 };
 
 export default BlogDetails;
